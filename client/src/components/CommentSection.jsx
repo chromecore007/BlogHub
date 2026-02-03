@@ -8,7 +8,7 @@ const CommentSection = ({ blogId }) => {
 
   const fetchComments = async () => {
     const res = await axios.get(
-      `http://localhost:5000/api/comment/${blogId}`
+      `https://bloghub-e2gd.onrender.com/api/comment/${blogId}`
     );
     setComments(res.data.comments);
   };
@@ -25,7 +25,7 @@ const CommentSection = ({ blogId }) => {
     }
 
     await axios.post(
-      `http://localhost:5000/api/comment/${blogId}`,
+      `https://bloghub-e2gd.onrender.com/api/comment/${blogId}`,
       { text },
       {
         headers: {

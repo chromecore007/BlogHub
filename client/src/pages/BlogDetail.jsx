@@ -17,7 +17,7 @@ const BlogDetail = () => {
     const fetchBlog = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/blog/${id}`
+          `https://bloghub-e2gd.onrender.com/api/blog/${id}`
         );
         setBlog(res.data.blog);
       } catch (err) {
@@ -32,7 +32,7 @@ const BlogDetail = () => {
 
     try {
       await axios.delete(
-        `http://localhost:5000/api/blog/${id}`,
+        `https://bloghub-e2gd.onrender.com/api/blog/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

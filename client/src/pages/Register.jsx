@@ -23,7 +23,7 @@ const Register = () => {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "https://bloghub-e2gd.onrender.com/api/auth/register",
         form
       );
       navigate("/login");

@@ -14,7 +14,7 @@ const Home = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `http://localhost:5000/api/blog/all?search=${search}&page=${page}`
+        `https://bloghub-e2gd.onrender.com/api/blog/all?search=${search}&page=${page}`
       );
       setBlogs(res.data.blogs);
       setPages(res.data.pages);

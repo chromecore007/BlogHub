@@ -23,7 +23,7 @@ const EditBlog = () => {
     const fetchBlog = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/blog/${id}`
+          `https://bloghub-e2gd.onrender.com/api/blog/${id}`
         );
 
         const blog = res.data.blog;
@@ -71,7 +71,7 @@ const EditBlog = () => {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/blog/${id}`,
+        `https://bloghub-e2gd.onrender.com/api/blog/${id}`,
         formData,
         {
           headers: {

@@ -40,7 +40,7 @@ const CreateBlog = () => {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/blog/create",
+        "https://bloghub-e2gd.onrender.com/api/blog/create",
         formData,
         {
           headers: {
