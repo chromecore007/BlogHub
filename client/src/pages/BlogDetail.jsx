@@ -9,6 +9,7 @@ const BlogDetail = () => {
   const navigate = useNavigate();
 
   const [blog, setBlog] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const token = sessionStorage.getItem("token");
   const loggedUser = JSON.parse(sessionStorage.getItem("user") || "null");
@@ -21,49 +22,36 @@ const BlogDetail = () => {
         );
         setBlog(res.data.blog);
       } catch (err) {
-        console.log(err);
+        // 🔥 HANDLE 404 / DELETED BLOG
+        if (err.response?.status === 404) {
+          navigate("/");
+        }
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchBlog();
-  }, [id]);
+  }, [id, navigate]);
 
-  const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this blog?")) return;
+  if (loading) {
+    return <p className="blog-loading">Loading blog...</p>;
+  }
 
-    try {
-      await axios.delete(
-        `https://bloghub-e2gd.onrender.com/api/blog/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      navigate("/");
-    } catch (err) {
-      alert(err.response?.data?.message || "Delete failed");
-    }
-  };
-
-  /* 🔐 LOADING GUARD */
   if (!blog) {
-    return <p className="blog-loading">Loading...</p>;
+    return <p className="blog-loading">Blog not found</p>;
   }
 
   return (
     <div className="blog-detail-container">
       {/* IMAGE */}
       {blog.image && (
-        <img
-          src={blog.image}
-          alt="blog"
-          className="blog-detail-image"
-        />
+        <img src={blog.image} alt="blog" className="blog-detail-image" />
       )}
 
       {/* HEADER */}
       <div className="blog-header">
-        <h1>{blog.title}</h1>
+        <h1>{blog.title || "Untitled"}</h1>
 
         <div className="blog-meta">
           <span className="blog-author">
@@ -74,7 +62,7 @@ const BlogDetail = () => {
 
       {/* CONTENT */}
       <div className="blog-content">
-        <p>{blog.content}</p>
+        <p>{blog.content || ""}</p>
       </div>
 
       {/* ACTIONS (ONLY OWNER) */}
@@ -87,7 +75,19 @@ const BlogDetail = () => {
               Edit
             </Link>
 
-            <button className="delete-btn" onClick={handleDelete}>
+            <button
+              className="delete-btn"
+              onClick={async () => {
+                if (!window.confirm("Delete this blog?")) return;
+                await axios.delete(
+                  `https://bloghub-e2gd.onrender.com/api/blog/${id}`,
+                  {
+                    headers: { Authorization: `Bearer ${token}` },
+                  }
+                );
+                navigate("/");
+              }}
+            >
               Delete
             </button>
           </div>

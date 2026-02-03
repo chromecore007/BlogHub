@@ -16,12 +16,15 @@ const Home = () => {
       const res = await axios.get(
         `https://bloghub-e2gd.onrender.com/api/blog/all?search=${search}&page=${page}`
       );
-      setBlogs(res.data.blogs);
-      setPages(res.data.pages);
-      setLoading(false);
+
+      // 🔐 SAFETY: ensure array
+      setBlogs(Array.isArray(res.data.blogs) ? res.data.blogs : []);
+      setPages(res.data.pages || 1);
     } catch (err) {
-      setLoading(false);
       console.log(err);
+      setBlogs([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -31,14 +34,12 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* HERO SECTION */}
+      {/* HERO */}
       <section className="home-hero">
         <h1>
           Discover <span>Stories</span>, Ideas & Knowledge
         </h1>
-        <p>
-          Read and share thoughts from developers, students and creators.
-        </p>
+        <p>Read and share thoughts from developers and creators.</p>
 
         <input
           className="home-search"
@@ -61,13 +62,11 @@ const Home = () => {
 
         {blogs.map((blog) => (
           <div key={blog._id} className="home-blog-card">
-            {blog.image && (
-              <img src={blog.image} alt="blog" />
-            )}
+            {blog.image && <img src={blog.image} alt="blog" />}
 
             <div className="home-blog-content">
-              <h2>{blog.title}</h2>
-              <p className="home-desc">{blog.description}</p>
+              <h2>{blog.title || "Untitled"}</h2>
+              <p className="home-desc">{blog.description || ""}</p>
 
               <div className="home-blog-footer">
                 <span className="home-author">
@@ -86,10 +85,7 @@ const Home = () => {
       {/* PAGINATION */}
       {pages > 1 && (
         <div className="home-pagination">
-          <button
-            disabled={page === 1}
-            onClick={() => setPage(page - 1)}
-          >
+          <button disabled={page === 1} onClick={() => setPage(page - 1)}>
             ← Prev
           </button>
 
@@ -97,10 +93,7 @@ const Home = () => {
             Page {page} of {pages}
           </span>
 
-          <button
-            disabled={page === pages}
-            onClick={() => setPage(page + 1)}
-          >
+          <button disabled={page === pages} onClick={() => setPage(page + 1)}>
             Next →
           </button>
         </div>
