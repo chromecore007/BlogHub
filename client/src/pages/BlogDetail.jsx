@@ -11,7 +11,7 @@ const BlogDetail = () => {
   const [blog, setBlog] = useState(null);
 
   const token = sessionStorage.getItem("token");
-  const loggedUser = JSON.parse(sessionStorage.getItem("user"));
+  const loggedUser = JSON.parse(sessionStorage.getItem("user") || "null");
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -39,13 +39,13 @@ const BlogDetail = () => {
           },
         }
       );
-
       navigate("/");
     } catch (err) {
       alert(err.response?.data?.message || "Delete failed");
     }
   };
 
+  /* 🔐 LOADING GUARD */
   if (!blog) {
     return <p className="blog-loading">Loading...</p>;
   }
@@ -67,7 +67,7 @@ const BlogDetail = () => {
 
         <div className="blog-meta">
           <span className="blog-author">
-            ✍️ {blog.author?.name}
+            ✍️ {blog.author?.name || "Unknown"}
           </span>
         </div>
       </div>
@@ -77,18 +77,21 @@ const BlogDetail = () => {
         <p>{blog.content}</p>
       </div>
 
-      {/* ACTIONS */}
-      {token && loggedUser?.id === blog.author?._id && (
-        <div className="blog-actions">
-          <Link to={`/edit/${id}`} className="edit-btn">
-            Edit
-          </Link>
+      {/* ACTIONS (ONLY OWNER) */}
+      {token &&
+        loggedUser &&
+        blog.author &&
+        loggedUser.id === blog.author._id && (
+          <div className="blog-actions">
+            <Link to={`/edit/${id}`} className="edit-btn">
+              Edit
+            </Link>
 
-          <button className="delete-btn" onClick={handleDelete}>
-            Delete
-          </button>
-        </div>
-      )}
+            <button className="delete-btn" onClick={handleDelete}>
+              Delete
+            </button>
+          </div>
+        )}
 
       {/* COMMENTS */}
       <CommentSection blogId={id} />
