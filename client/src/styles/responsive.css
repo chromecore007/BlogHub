@@ -1,0 +1,17 @@
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+  }
+
+  .container {
+    padding: 14px;
+  }
+
+  .form-box {
+    margin: 30px 12px;
+  }
+
+  button {
+    width: 100%;
+  }
+}

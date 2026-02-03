@@ -1,0 +1,32 @@
+:root {
+  --primary: #4f46e5;
+  --primary-dark: #4338ca;
+  --bg: #f8fafc;
+  --card-bg: #ffffff;
+  --text-dark: #0f172a;
+  --text-light: #64748b;
+  --border: #e5e7eb;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background: linear-gradient(120deg, #f8fafc, #eef2ff);
+  color: var(--text-dark);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.container {
+  max-width: 960px;
+  margin: auto;
+  padding: 24px;
+}

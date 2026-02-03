@@ -1,0 +1,10 @@
+.comment-box {
+  background: #f1f5ff;
+  padding: 14px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.comment-box b {
+  color: var(--primary-dark);
+}
